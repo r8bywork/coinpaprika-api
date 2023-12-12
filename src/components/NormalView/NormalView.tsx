@@ -24,11 +24,11 @@ const NormalView = ({ coin }:NormalViewProps) => {
             </div>
 
             <Collapse className={"mb-3"}>
-                <Panel header={"Tags"} key={v4()}>
-                    {coin.tags.map(tag => (
-                        <Tag color="blue" key={tag.id}>{tag.name}</Tag>
-                    ))}
-                </Panel>
+                {/*<Panel header={"Tags"} key={v4()}>*/}
+                {/*    {coin.tags.map(tag => (*/}
+                {/*        <Tag color="blue" key={tag.id}>{tag.name}</Tag>*/}
+                {/*    ))}*/}
+                {/*</Panel>*/}
                 <Panel header="Team" key={v4()}>
                     <List
                         itemLayout="horizontal"

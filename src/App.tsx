@@ -6,6 +6,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import NormalView from "./components/NormalView/NormalView.tsx";
 import {NormalViewProps} from "./interfaces.ts";
+import Table from "./components/Table/Table.tsx";
 
 interface CoinList{
  id: string;
@@ -35,11 +36,12 @@ const App = () => {
           .then(res => setCoins(res.data))
           .catch(err => console.error(err));
     }
+    fetchCoinInfo('btc-bitcoin')
     fetchCoins()
   },[])
 
   useEffect(() => {
-    console.log(selectedCoin)
+    console.log(coins)
   }, [coins, selectedCoin]);
 
   return (
@@ -57,7 +59,7 @@ const App = () => {
           selected ? await fetchCoinInfo(selected.id) : null;
         }}
       />
-      <Tabs defaultActiveKey="0" items={[
+      <Tabs defaultActiveKey="3" items={[
         {
           key: '0',
           label: 'Chart',
@@ -68,11 +70,16 @@ const App = () => {
           label: 'JsonView',
           children: <Json coinInfo={coinInfo}/>,
         },
-          {
-              key: '2',
-              label: 'NormalView',
-              children: <NormalView coin={coinInfo}/>,
-          },
+        {
+          key: '2',
+          label: 'NormalView',
+          children: <NormalView coin={coinInfo}/>,
+        },
+        {
+          key: '3',
+          label: 'Table',
+          children: <Table coins={coins}/>,
+        },
       ]} />
     </div>
   )
