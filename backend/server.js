@@ -14,7 +14,7 @@ app.get('/coins/list', async (req, res) => {
 
 
 app.get('/coin/:id', async (req, res) => {
-    const result = await axios.get(`https://api.coinpaprika.com/v1/coins/${req.params.id}`)
+    const result = await axios.get(`https://api.coinpaprika.com/v1/coins/${req.params.id || 'btc-bitcoin'}`)
     return res.json(result.data);
 });
 app.use(express.json());

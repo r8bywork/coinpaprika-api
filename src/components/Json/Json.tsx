@@ -1,7 +1,8 @@
 import ReactJson from "react-json-view";
 import './Json.css'
+import {NormalViewProps} from "../../interfaces.ts";
 interface CoinInfoProps {
-    coinInfo: never[];
+    coinInfo: NormalViewProps;
 }
 const Json = ({coinInfo}:CoinInfoProps) => {
     return (

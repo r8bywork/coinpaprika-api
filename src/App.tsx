@@ -5,6 +5,7 @@ import Json from "./components/Json/Json.tsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import NormalView from "./components/NormalView/NormalView.tsx";
+import {NormalViewProps} from "./interfaces.ts";
 
 interface CoinList{
  id: string;
@@ -20,7 +21,7 @@ const App = () => {
   const [coins, setCoins] = useState<CoinList[]>([]);
   const [selectedCoin, setSelectedCoin] = useState<{ id: string, name: string } | null>(null);
   const coinOptions = coins.map(coin => ({value: coin.id, label: coin.name}));
-  const [coinInfo, setCoinInfo] = useState([])
+  const [coinInfo, setCoinInfo] = useState<NormalViewProps>()
 
   const fetchCoinInfo = async (coinId: string) => {
     const result = await axios.get(`http://localhost:5000/coin/${coinId}`);
@@ -53,9 +54,7 @@ const App = () => {
         onSelect={async (value: string) => {
           const selected = coins.find((coin) => coin.id === value) || null;
           setSelectedCoin(selected);
-          if (selected) {
-            await fetchCoinInfo(selected.id);
-          }
+          selected ? await fetchCoinInfo(selected.id) : null;
         }}
       />
       <Tabs defaultActiveKey="0" items={[

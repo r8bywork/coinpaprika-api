@@ -17,7 +17,7 @@ const Chart = ({selectedCoinId}:ChartProps) => {
 
     useEffect(() => {
         if (!chartRef.current && chartContainerRef.current) {
-            chartRef.current = createChart(chartContainerRef.current, { width: 800, height: 600 });
+            chartRef.current = createChart(chartContainerRef.current, { width: 600, height: 400 });
             seriesRef.current = chartRef.current.addLineSeries();
         }
     }, []);
@@ -47,7 +47,7 @@ const Chart = ({selectedCoinId}:ChartProps) => {
                     {timeframe}
                 </Button>
             ))}
-            <div ref={chartContainerRef} style={{ width: '600px', height: '400px' }} />
+            <div ref={chartContainerRef} className={"w600px h400px"}/>
         </div>
     )
 }
