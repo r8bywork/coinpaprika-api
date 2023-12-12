@@ -1,0 +1,10 @@
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card-size {
+    width: 50%;
+}
