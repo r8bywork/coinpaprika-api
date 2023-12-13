@@ -25,14 +25,20 @@ const App = () => {
   const [coinInfo, setCoinInfo] = useState<NormalViewProps>()
 
   const fetchCoinInfo = async (coinId: string) => {
-    const result = await axios.get(`http://localhost:5000/coin/${coinId}`);
+    const result = await axios.get(`http://localhost:5001/coin/${coinId}`);
     setCoinInfo(result.data)
     console.log(result.data)
   };
 
+  // const fetchTableInfo = async () => {
+  //   const result = await axios.get('http://localhost:5001/coins/table');
+  //   setCoinInfo(result.data)
+  //   console.log(result.data)
+  // }
+
   useEffect(() => {
     const fetchCoins = async () => {
-      await axios.get("http://localhost:5000/coins/list")
+      await axios.get("http://localhost:5001/coins/table")
           .then(res => setCoins(res.data))
           .catch(err => console.error(err));
     }

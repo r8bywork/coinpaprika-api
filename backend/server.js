@@ -5,7 +5,7 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-const port = 5000;
+const port = 5001;
 
 app.get('/coins/list', async (req, res) => {
     const result = await axios.get('https://api.coinpaprika.com/v1/coins')
@@ -23,6 +23,11 @@ app.get('/coin/chart/:id', async (req, res) => {
     const id = req.params.id;
     const {start, interval} = req.query;
     const result = await axios.get(`https://api.coinpaprika.com/v1/tickers/${id}/historical?start=${start || '2023-01-01'}&interval=${interval}`)
+    return res.json(result.data)
+});
+
+app.get('/coins/table', async (req, res) => {
+    const result = await axios.get(`https://api.coinpaprika.com/v1/tickers`)
     return res.json(result.data)
 });
 
