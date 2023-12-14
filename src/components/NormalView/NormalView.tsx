@@ -1,13 +1,17 @@
 import {Card, Avatar, Tag, List, Collapse} from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
-import {NormalViewProps, TeamMember} from "../../interfaces.ts";
+import {Coin, TeamMember} from "../../interfaces.ts";
 const {Panel} = Collapse;
 import {v4} from "uuid"
-const NormalView = ({ coin }:NormalViewProps) => {
+interface NormalViewProps {
+    coin: Coin;
+}
+const NormalView = ({ coin }: NormalViewProps) => {
     return (
         <div className={"centered"}>
         <Card cover={<img alt={coin.name} style={{width: 200}} src={coin.logo} />}>
             <Card.Meta
+                className={"pb-3"}
                 avatar={<Avatar icon={<AntDesignOutlined />} />}
                 title={coin.name}
                 description={coin.description}
@@ -23,12 +27,7 @@ const NormalView = ({ coin }:NormalViewProps) => {
                 ))}
             </div>
 
-            <Collapse className={"mb-3"}>
-                {/*<Panel header={"Tags"} key={v4()}>*/}
-                {/*    {coin.tags.map(tag => (*/}
-                {/*        <Tag color="blue" key={tag.id}>{tag.name}</Tag>*/}
-                {/*    ))}*/}
-                {/*</Panel>*/}
+            {coin.team.length > 0 && <Collapse className={"mb-3"}>
                 <Panel header="Team" key={v4()}>
                     <List
                         itemLayout="horizontal"
@@ -44,20 +43,25 @@ const NormalView = ({ coin }:NormalViewProps) => {
                         )}
                     />
                 </Panel>
-            </Collapse>
-            <div className={"mb-3"}>
-                <h3 className={"font-bold"}>Links</h3>
-                {coin.links.website.map((url, index) => (
-                    <a href={url} target="_blank" rel="noreferrer" key={index}>Website</a>
-                ))}
-                {coin.links.source_code.map((url, index) => (
-                    <a href={url} target="_blank" rel="noreferrer" key={index}>Source Code</a>
-                ))}
-                {coin.links.youtube.map((url, index) => (
-                    <a href={url} target="_blank" rel="noreferrer" key={index}>YouTube</a>
-                ))}
+            </Collapse>}
+            <div className="mb-3">
+              <h3 className="font-bold">Links</h3>
+              {
+               Object.entries(coin?.links).map(([key, values]) => (
+                  values.map((url, index) => (
+                      <a
+                          href={url}
+                          target="_blank"
+                          rel="noreferrer"
+                          key={`${key}-${index}`}
+                          className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2">
+                  {key}
+                  </a>
+                  ))
+               ))
+              }
             </div>
-            <p>Started at: {new Date(coin.started_at).toLocaleDateString()}</p>
+            <p>Started at: {new Date(coin?.started_at).toLocaleDateString()}</p>
        </Card>
         </div>
     )

@@ -1,16 +1,15 @@
-
 import {ChangeEvent, useMemo, useState} from 'react';
 import { Input, Table } from 'antd';
-import { NormalViewProps } from '../../interfaces.ts';
+import {CoinTable} from '../../interfaces.ts';
 import { ColumnsConfig } from "./TableConfig.ts";
 
 interface TableProps {
-    coins: NormalViewProps[];
+    coins: CoinTable[];
 }
 
 const CoinTable = ({ coins }: TableProps) => {
     const [searchText, setSearchText] = useState('');
-
+    console.log(coins)
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
     };
