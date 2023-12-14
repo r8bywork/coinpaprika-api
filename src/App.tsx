@@ -5,45 +5,38 @@ import Json from "./components/Json/Json.tsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import NormalView from "./components/NormalView/NormalView.tsx";
-import {NormalViewProps} from "./interfaces.ts";
+import {Coin, CoinTable} from "./interfaces.ts";
 import Table from "./components/Table/Table.tsx";
 
-interface CoinList{
- id: string;
- is_active: boolean;
- is_new: boolean;
- name: string;
- rank: number;
- symbol: string;
- type: string;
-}
-
 const App = () => {
-  const [coins, setCoins] = useState<CoinList[]>([]);
+  const [coins, setCoins] = useState<CoinTable[]>([]);
   const [selectedCoin, setSelectedCoin] = useState<{ id: string, name: string } | null>(null);
   const coinOptions = coins.map(coin => ({value: coin.id, label: coin.name}));
-  const [coinInfo, setCoinInfo] = useState<NormalViewProps>()
-
-  const fetchCoinInfo = async (coinId: string) => {
-    const result = await axios.get(`http://localhost:5001/coin/${coinId}`);
-    setCoinInfo(result.data)
-    console.log(result.data)
+  const [coinInfo, setCoinInfo] = useState<Coin>()
+  const fetchCoinInfo = (coinId: string) => {
+    axios.get(`http://localhost:5001/coin/${coinId}`)
+      .then(response => {
+        setCoinInfo(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  const fetchCoins = async () => {
+    await axios.get("http://localhost:5001/coins/table")
+        .then(response => {
+          setCoins(response.data)
+        })
+        .catch(error => {
+          console.error(error)
+        });
   };
 
-  // const fetchTableInfo = async () => {
-  //   const result = await axios.get('http://localhost:5001/coins/table');
-  //   setCoinInfo(result.data)
-  //   console.log(result.data)
-  // }
-
   useEffect(() => {
-    const fetchCoins = async () => {
-      await axios.get("http://localhost:5001/coins/table")
-          .then(res => setCoins(res.data))
-          .catch(err => console.error(err));
-    }
-    fetchCoinInfo('btc-bitcoin')
-    fetchCoins()
+      Promise.all([
+          fetchCoinInfo('btc-bitcoin'),
+          fetchCoins(),
+      ]).catch(e => console.log('Error fetching data:', e));
   },[])
 
   useEffect(() => {
@@ -74,12 +67,12 @@ const App = () => {
         {
           key: '1',
           label: 'JsonView',
-          children: <Json coinInfo={coinInfo}/>,
+          children: coinInfo && <Json coinInfo={coinInfo}/>,
         },
         {
           key: '2',
           label: 'NormalView',
-          children: <NormalView coin={coinInfo}/>,
+          children: coinInfo && <NormalView coin={coinInfo}/>,
         },
         {
           key: '3',
