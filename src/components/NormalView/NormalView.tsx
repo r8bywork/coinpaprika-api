@@ -1,15 +1,17 @@
-import {Card, Avatar, Tag, List, Collapse} from 'antd';
-import { AntDesignOutlined } from '@ant-design/icons';
+import {Card, Avatar, Tag, List, Collapse, Spin} from 'antd';
+import {AntDesignOutlined, LoadingOutlined} from '@ant-design/icons';
 import {Coin, TeamMember} from "../../interfaces.ts";
 const {Panel} = Collapse;
 import {v4} from "uuid"
+import Chart from "../Chart/Chart.tsx";
 interface NormalViewProps {
-    coin: Coin;
+    coin: Coin | null;
+    selectedCoin: {id: string, name: string};
 }
-const NormalView = ({ coin }: NormalViewProps) => {
+const NormalView = ({ coin, selectedCoin }: NormalViewProps) => {
     return (
         <div className={"centered"}>
-        <Card cover={<img alt={coin.name} style={{width: 200}} src={coin.logo} />}>
+            {coin && <Card cover={<img alt={coin.name} style={{width: 200}} src={coin.logo} />}>
             <Card.Meta
                 className={"pb-3"}
                 avatar={<Avatar icon={<AntDesignOutlined />} />}
@@ -26,9 +28,12 @@ const NormalView = ({ coin }: NormalViewProps) => {
                     <Tag color="blue" key={tag.id}>{tag.name}</Tag>
                 ))}
             </div>
-
-            {coin.team.length > 0 && <Collapse className={"mb-3"}>
-                <Panel header="Team" key={v4()}>
+            {coin.id.length > 0 &&
+                <Collapse className={"mb-3"}>
+                    <Panel header="Chart" key={v4()}>
+                        {selectedCoin ?  <Chart selectedCoinId={selectedCoin.id}/> : <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}/>}
+                    </Panel>
+                    <Panel header="Team" key={v4()}>
                     <List
                         itemLayout="horizontal"
                         dataSource={coin.team}
@@ -46,8 +51,7 @@ const NormalView = ({ coin }: NormalViewProps) => {
             </Collapse>}
             <div className="mb-3">
               <h3 className="font-bold">Links</h3>
-              {
-               Object.entries(coin?.links).map(([key, values]) => (
+              {Object.entries(coin?.links).map(([key, values]) => (
                   values.map((url, index) => (
                       <a
                           href={url}
@@ -62,7 +66,7 @@ const NormalView = ({ coin }: NormalViewProps) => {
               }
             </div>
             <p>Started at: {new Date(coin?.started_at).toLocaleDateString()}</p>
-       </Card>
+       </Card>}
         </div>
     )
 }

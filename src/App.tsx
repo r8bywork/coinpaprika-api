@@ -1,6 +1,5 @@
 
 import {AutoComplete, Tabs} from "antd";
-import Chart from "./components/Chart/Chart.tsx";
 import Json from "./components/Json/Json.tsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
@@ -8,9 +7,13 @@ import NormalView from "./components/NormalView/NormalView.tsx";
 import {Coin, CoinTable} from "./interfaces.ts";
 import Table from "./components/Table/Table.tsx";
 
+interface SelectedCoin {
+    id: string;
+    name: string;
+}
 const App = () => {
   const [coins, setCoins] = useState<CoinTable[]>([]);
-  const [selectedCoin, setSelectedCoin] = useState<{ id: string, name: string } | null>(null);
+  const [selectedCoin, setSelectedCoin] = useState<SelectedCoin | null>({id: "btc-bitcoin", name:"bitcoin"});
   const coinOptions = coins.map(coin => ({value: coin.id, label: coin.name}));
   const [coinInfo, setCoinInfo] = useState<Coin>()
   const fetchCoinInfo = (coinId: string) => {
@@ -40,7 +43,7 @@ const App = () => {
   },[])
 
   useEffect(() => {
-    console.log(coins)
+    console.log(selectedCoin)
   }, [coins, selectedCoin]);
 
   return (
@@ -55,27 +58,22 @@ const App = () => {
         onSelect={async (value: string) => {
           const selected = coins.find((coin) => coin.id === value) || null;
           setSelectedCoin(selected);
-          selected ? await fetchCoinInfo(selected.id) : null;
+          selected ? fetchCoinInfo(selected.id) : null;
         }}
       />
-      <Tabs defaultActiveKey="3" items={[
+      <Tabs defaultActiveKey="1" items={[
         {
           key: '0',
-          label: 'Chart',
-          children: <Chart selectedCoinId={selectedCoin?.id || ''}/>,
-        },
-        {
-          key: '1',
           label: 'JsonView',
           children: coinInfo && <Json coinInfo={coinInfo}/>,
         },
         {
-          key: '2',
+          key: '1',
           label: 'NormalView',
-          children: coinInfo && <NormalView coin={coinInfo}/>,
+          children: <NormalView selectedCoin={selectedCoin} coin={coinInfo}/>,
         },
         {
-          key: '3',
+          key: '2',
           label: 'Table',
           children: <Table coins={coins}/>,
         },

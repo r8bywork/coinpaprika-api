@@ -24,7 +24,7 @@ const Chart = ({selectedCoinId}:ChartProps) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(`http://localhost:5001/coin/chart/${selectedCoinId || 'btc-bitcoin'}?start=${'2023-01-01'}&interval=${selectedTimeframe}`);
+            const result = await axios.get(`http://localhost:5001/coin/chart/${selectedCoinId}?start=${'2023-01-01'}&interval=${selectedTimeframe}`);
             const chartData = Object.values(result.data).map((entry) => {
                 return {
                     time: new Date(entry.timestamp).getTime() / 1000,
