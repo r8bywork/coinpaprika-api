@@ -92,7 +92,7 @@ const App = () => {
             selected ? fetchCoinInfo(selected.id) : null;
           }}
         />
-        <Tabs defaultActiveKey="1" items={[
+        {selectedCoin && coinInfo && <Tabs defaultActiveKey="1" items={[
             {
             key: '0',
             label: 'JsonView',
@@ -108,7 +108,7 @@ const App = () => {
             label: 'Table',
             children: <Table coins={coins}/>,
             },
-        ]} />
+        ]} />}
         </>
       )}
     </div>
