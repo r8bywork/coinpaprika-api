@@ -9,7 +9,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
-      # Generated certificates are stored in `/letsencrypt/acme.json`.
       - letsencrypt:/letsencrypt
     labels:
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.Cache-Control=no-cache"
@@ -24,7 +23,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.webserver.rule=Host(`localhost`)"
       - "traefik.http.routers.webserver.tls=true"
-#      - "traefik.http.routers.webserver.tls.certresolver=myresolver"
+      - "traefik.http.routers.webserver.tls=myresolver"
       - "traefik.http.routers.webserver.entrypoints=web,websecure"
       - "traefik.http.services.webserver.loadbalancer.server.port=80"
 

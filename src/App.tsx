@@ -20,8 +20,8 @@ const App = () => {
   const [visible, setVisible] = useState(true);
 
 
-  const fetchCoinInfo = (coinId: string) => {
-    axios.get(`http://localhost:5001/coin/${coinId}`)
+  const fetchCoinInfo = async (coinId?: string) => {
+    await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId || 'btc-bitcoin'}`)
       .then(response => {
         setCoinInfo(response.data);
       })
@@ -30,7 +30,7 @@ const App = () => {
       });
   };
   const fetchCoins = async () => {
-    await axios.get("http://localhost:5001/coins/table")
+    await axios.get(`https://api.coinpaprika.com/v1/tickers`)
         .then(response => {
           setCoins(response.data)
         })
@@ -41,7 +41,7 @@ const App = () => {
 
   useEffect(() => {
       Promise.all([
-          fetchCoinInfo('btc-bitcoin'),
+          fetchCoinInfo(),
           fetchCoins(),
       ]).catch(e => console.log('Error fetching data:', e));
   },[])
@@ -90,7 +90,7 @@ const App = () => {
           onSelect={async (value: string) => {
             const selected = coins.find((coin) => coin.id === value) || null;
             setSelectedCoin(selected);
-            selected ? fetchCoinInfo(selected.id) : null;
+            selected ? await fetchCoinInfo(selected.id) : null;
           }}
         />
         {selectedCoin && coinInfo && <Tabs defaultActiveKey="1" items={[

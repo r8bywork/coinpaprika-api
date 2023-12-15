@@ -1,12 +1,12 @@
 debug: true
 logLevel: DEBUG
 
+api:
+  insecure: true
+  dashboard: true
 providers:
   docker:
     exposedByDefault: false
-api:
-  dashboard: true
-  insecure: true
 entryPoints:
   web:
     address: ":80"
@@ -19,11 +19,11 @@ entryPoints:
   websecure:
     address: ":443"
 
-#certificatesResolvers:
-#  myresolver:
-#    acme:
-#      email: "idquantum@gmail.com"
-#      storage: /letsencrypt/acme.json
-#      tlschallenge: true
-#      httpChallenge:
-#        entryPoint: web
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: "idquantum@gmail.com"
+      storage: /letsencrypt/acme.json
+      tlschallenge: true
+      httpChallenge:
+        entryPoint: web
