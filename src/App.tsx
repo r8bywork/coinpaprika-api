@@ -19,6 +19,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(true);
 
+
   const fetchCoinInfo = (coinId: string) => {
     axios.get(`http://localhost:5001/coin/${coinId}`)
       .then(response => {

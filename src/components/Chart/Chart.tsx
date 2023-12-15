@@ -33,6 +33,7 @@ const Chart = ({selectedCoinId}:ChartProps) => {
             });
             seriesRef.current && seriesRef.current.setData(chartData as any);
         };
+
         fetchData();
     }, [selectedCoinId, selectedTimeframe]);
 
