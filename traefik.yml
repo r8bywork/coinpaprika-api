@@ -1,0 +1,29 @@
+debug: true
+logLevel: DEBUG
+
+providers:
+  docker:
+    exposedByDefault: false
+api:
+  dashboard: true
+  insecure: true
+entryPoints:
+  web:
+    address: ":80"
+    # `redirections` works with `httpChallenge`.
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+
+#certificatesResolvers:
+#  myresolver:
+#    acme:
+#      email: "idquantum@gmail.com"
+#      storage: /letsencrypt/acme.json
+#      tlschallenge: true
+#      httpChallenge:
+#        entryPoint: web

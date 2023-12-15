@@ -6,6 +6,7 @@ const app = express();
 app.use(cors());
 
 const port = 5001;
+app.set('trust proxy', true);
 
 app.get('/coins/list', async (req, res) => {
     const result = await axios.get('https://api.coinpaprika.com/v1/coins')
