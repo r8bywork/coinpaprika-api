@@ -18,31 +18,14 @@ services:
     image: nginx
     volumes:
       - ./dist:/usr/share/nginx/html
-      - ./conf:/etc/nginx/conf.d # custom conf goes here
+      - ./conf:/etc/nginx/conf.d
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.webserver.rule=Host(`localhost`)"
       - "traefik.http.routers.webserver.tls=true"
-      - "traefik.http.routers.webserver.tls=myresolver"
+      - "traefik.http.routers.webserver.tls.certresolver=myresolver"
       - "traefik.http.routers.webserver.entrypoints=web,websecure"
       - "traefik.http.services.webserver.loadbalancer.server.port=80"
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    expose:
-      - 5001
-    ports:
-      - "5001:5001"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`localhost`)"
-      - "traefik.http.routers.backend.tls=true"
-      - "traefik.http.routers.backend.tls.certresolver=myresolver"
-      - "traefik.http.routers.backend.entrypoints=web,websecure"
-      - "traefik.http.services.backend.loadbalancer.server.port=5001"
-
 volumes:
-  # Volume for certificates
   letsencrypt:
