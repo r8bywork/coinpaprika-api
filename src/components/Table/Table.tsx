@@ -7,11 +7,10 @@ import { columnsConfig } from "./TableConfig.tsx";
 interface TableProps {
     coins: CoinTable[];
     changeSelectedCoin: (coinId: string) => void;
-    tags: [];
+    tags: {name: string; id: string}[];
 }
 
 const CoinTable = ({ coins, changeSelectedCoin, tags}: TableProps) => {
-    console.log(coins)
     const [searchText, setSearchText] = useState('');
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
@@ -22,6 +21,10 @@ const CoinTable = ({ coins, changeSelectedCoin, tags}: TableProps) => {
         return coins.filter((coin) => coin.name.toLowerCase().includes(searchText.toLowerCase()));
     }, [searchText, coins]);
 
+    const parsedTags = useMemo(() => {
+        return tags?.map(tag => ({ text: tag.name, value: tag.id }));
+    }, [tags]);
+
     return (
         <div>
             <Input
@@ -30,9 +33,13 @@ const CoinTable = ({ coins, changeSelectedCoin, tags}: TableProps) => {
                 value={searchText}
                 onChange={handleSearch}
             />
-            <Table rowKey={"id"} className={"cursor-pointer"} columns={columnsConfig(tags)} dataSource={filteredCoins} onRow={(record) => ({
-                onClick: () => changeSelectedCoin(record.id),
-            })} />
+            <Table rowKey={"id"}
+                   className={"cursor-pointer"}
+                   columns={columnsConfig(parsedTags)}
+                   dataSource={filteredCoins}
+                   onRow={(record) => ({
+                       onClick: () => changeSelectedCoin(record.id),
+                   })}/>
         </div>
     );
 };

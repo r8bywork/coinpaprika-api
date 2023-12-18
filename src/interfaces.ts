@@ -78,6 +78,7 @@ export interface CoinTable{
     max_supply: number;
     rank: number;
     total_supply: number;
+    tags: { id: string; name: string }[];
     quotes: {
         USD: {
             ath_date: string;

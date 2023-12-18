@@ -1,7 +1,7 @@
 import {CoinTable} from "../../interfaces.ts";
 import {Tag} from "antd";
 
-export const columnsConfig= (allTags) => [
+export const columnsConfig = (parsedTags: { text: string; value: string }[]) => [
     {
         title: 'Name',
         dataIndex: 'name',
@@ -54,7 +54,7 @@ export const columnsConfig= (allTags) => [
         title: 'Tags',
         dataIndex: 'tags',
         key: 'tags',
-        render: tags => (
+        render: (tags: { id: string, name: string }[]) => (
             <>
             {tags.map(tag => (
                 <Tag color="blue" key={tag.id}>
@@ -63,11 +63,10 @@ export const columnsConfig= (allTags) => [
             ))}
             </>
         ),
-        filters: [...new Set(allTags?.map(tag => {
-            return { text: tag.name, value: tag.id }
-        }))],
+        filters: parsedTags,
         filterSearch: true,
-        onFilter: (value, record) => record.tags.some(tag => tag.id === value),
-        // sorter: (a, b) => a.tags[0].name.localeCompare(b.tags[0].name),
+        onFilter: (value: string, record: CoinTable) =>
+            record.tags.some(tag => tag.id === value),
+        // onFilter: (value: string, record: CoinTable) => record.tags.some(tag => tag.id === value),
     },
 ]
