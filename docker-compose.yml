@@ -15,13 +15,16 @@ services:
       - "traefik.http.middlewares.testHeader.headers.customrequestheaders.Pragma=no-cache"
 
   webserver:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     image: nginx
     volumes:
       - ./dist:/usr/share/nginx/html
       - ./conf:/etc/nginx/conf.d
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.webserver.rule=Host(`localhost`)"
+      - "traefik.http.routers.webserver.rule=Host(`cryptonavigator.ai`)"
       - "traefik.http.routers.webserver.tls=true"
       - "traefik.http.routers.webserver.tls.certresolver=myresolver"
       - "traefik.http.routers.webserver.entrypoints=web,websecure"
