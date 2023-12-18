@@ -1,7 +1,7 @@
 import {CoinTable} from "../../interfaces.ts";
 import {Tag} from "antd";
 
-export const ColumnsConfig = [
+export const columnsConfig= (allTags) => [
     {
         title: 'Name',
         dataIndex: 'name',
@@ -63,5 +63,11 @@ export const ColumnsConfig = [
             ))}
             </>
         ),
+        filters: [...new Set(allTags?.map(tag => {
+            return { text: tag.name, value: tag.id }
+        }))],
+        filterSearch: true,
+        onFilter: (value, record) => record.tags.some(tag => tag.id === value),
+        // sorter: (a, b) => a.tags[0].name.localeCompare(b.tags[0].name),
     },
 ]

@@ -19,7 +19,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("2");
-  const [tags, setTags] = useState()
+  const [tags, setTags] = useState();
   const fetchCoinInfo = async (coinId?: string) => {
     await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId || 'btc-bitcoin'}`)
       .then(response => {
@@ -37,7 +37,7 @@ const App = () => {
               additional_fields: 'coins'
           }
       });
-  
+
       const coins = coinsResponse.data;
       const tags = tagsResponse.data;
   
@@ -50,6 +50,7 @@ const App = () => {
       });
   
       setCoins(mergedData);
+      setTags(tags)
   };
   
   useEffect(() => {
@@ -123,7 +124,7 @@ const App = () => {
             {
                 key: '2',
                 label: 'Table',
-                children: <Table changeSelectedCoin={changeSelectedCoin} coins={coins}/>,
+                children: <Table tags={tags} changeSelectedCoin={changeSelectedCoin} coins={coins}/>,
             },
         ]} />}
         </>
