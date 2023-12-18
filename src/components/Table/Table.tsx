@@ -1,3 +1,4 @@
+
 import {ChangeEvent, useMemo, useState} from 'react';
 import { Input, Table } from 'antd';
 import {CoinTable} from '../../interfaces.ts';
@@ -5,11 +6,11 @@ import { ColumnsConfig } from "./TableConfig.ts";
 
 interface TableProps {
     coins: CoinTable[];
+    changeSelectedCoin: (coinId: string) => void;
 }
 
-const CoinTable = ({ coins }: TableProps) => {
+const CoinTable = ({ coins, changeSelectedCoin}: TableProps) => {
     const [searchText, setSearchText] = useState('');
-    console.log(coins)
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
     };
@@ -27,7 +28,9 @@ const CoinTable = ({ coins }: TableProps) => {
                 value={searchText}
                 onChange={handleSearch}
             />
-            <Table rowKey={"id"} columns={ColumnsConfig} dataSource={filteredCoins} />
+            <Table rowKey={"id"} className={"cursor-pointer"} columns={ColumnsConfig} dataSource={filteredCoins} onRow={(record) => ({
+                onClick: () => changeSelectedCoin(record.id),
+            })} />
         </div>
     );
 };

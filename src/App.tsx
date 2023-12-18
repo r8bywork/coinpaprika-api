@@ -13,12 +13,12 @@ interface SelectedCoin {
 }
 const App = () => {
   const [coins, setCoins] = useState<CoinTable[]>([]);
-  const [selectedCoin, setSelectedCoin] = useState<SelectedCoin | null>({id: "btc-bitcoin", name:"bitcoin"});
+  const [selectedCoin, setSelectedCoin] = useState<SelectedCoin>({id: "btc-bitcoin", name:"bitcoin"});
   const coinOptions = coins.map(coin => ({value: coin.id, label: coin.name}));
   const [coinInfo, setCoinInfo] = useState<Coin>()
   const [password, setPassword] = useState("");
-  const [visible, setVisible] = useState(true);
-
+  const [visible, setVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState("2");
 
   const fetchCoinInfo = async (coinId?: string) => {
     await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId || 'btc-bitcoin'}`)
@@ -40,19 +40,22 @@ const App = () => {
   };
 
   useEffect(() => {
-      Promise.all([
-          fetchCoinInfo(),
-          fetchCoins(),
-      ]).catch(e => console.log('Error fetching data:', e));
-  },[])
+    fetchCoins();
+  }, [])
 
   useEffect(() => {
-    console.log(selectedCoin)
-  }, [coins, selectedCoin]);
+      fetchCoinInfo(selectedCoin.id);
+  }, [selectedCoin])
 
   const handleSubmitPassword = () => {
         if (password !== "matrix2023") return;
         setVisible(false);
+  };
+
+  const changeSelectedCoin = (coinId: string) => {
+    const selected = coins.find((coin) => coin.id === coinId);
+    setSelectedCoin({ id: selected.id, name: selected.name });
+    setActiveTab("1")
   };
 
   return (
@@ -87,27 +90,25 @@ const App = () => {
           filterOption={(inputValue: string, option) =>
             option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
           }
-          onSelect={async (value: string) => {
-            const selected = coins.find((coin) => coin.id === value) || null;
-            setSelectedCoin(selected);
-            selected ? await fetchCoinInfo(selected.id) : null;
+          onSelect={(value: string) => {
+            changeSelectedCoin(value);
           }}
         />
-        {selectedCoin && coinInfo && <Tabs defaultActiveKey="1" items={[
+        {selectedCoin && coinInfo && <Tabs onChange={setActiveTab} activeKey={activeTab} items={[
             {
-            key: '0',
-            label: 'JsonView',
-            children: coinInfo && <Json coinInfo={coinInfo}/>,
+                key: '0',
+                label: 'JsonView',
+                children: <Json coinInfo={coinInfo}/>,
             },
             {
-            key: '1',
-            label: 'NormalView',
-            children: <NormalView selectedCoin={selectedCoin} coin={coinInfo}/>,
+                key: '1',
+                label: 'NormalView',
+                children: <NormalView selectedCoin={selectedCoin} coin={coinInfo}/>,
             },
             {
-            key: '2',
-            label: 'Table',
-            children: <Table coins={coins}/>,
+                key: '2',
+                label: 'Table',
+                children: <Table changeSelectedCoin={changeSelectedCoin} coins={coins}/>,
             },
         ]} />}
         </>
