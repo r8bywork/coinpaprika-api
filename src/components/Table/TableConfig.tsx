@@ -1,4 +1,5 @@
 import {CoinTable} from "../../interfaces.ts";
+import {Tag} from "antd";
 
 export const ColumnsConfig = [
     {
@@ -49,4 +50,18 @@ export const ColumnsConfig = [
         key: 'market_cap_usd',
         sorter: (a: CoinTable, b: CoinTable) => a.quotes.USD.market_cap - b.quotes.USD.market_cap,
     },
-];
+    {
+        title: 'Tags',
+        dataIndex: 'tags',
+        key: 'tags',
+        render: tags => (
+            <>
+            {tags.map(tag => (
+                <Tag color="blue" key={tag.id}>
+                    {tag.name}
+                </Tag>
+            ))}
+            </>
+        ),
+    },
+]

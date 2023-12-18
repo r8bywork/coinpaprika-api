@@ -2,7 +2,7 @@
 import {ChangeEvent, useMemo, useState} from 'react';
 import { Input, Table } from 'antd';
 import {CoinTable} from '../../interfaces.ts';
-import { ColumnsConfig } from "./TableConfig.ts";
+import { ColumnsConfig } from "./TableConfig.tsx";
 
 interface TableProps {
     coins: CoinTable[];

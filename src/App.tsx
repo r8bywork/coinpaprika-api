@@ -19,7 +19,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("2");
-
+  const [tags, setTags] = useState()
   const fetchCoinInfo = async (coinId?: string) => {
     await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId || 'btc-bitcoin'}`)
       .then(response => {
@@ -29,18 +29,31 @@ const App = () => {
         console.error(error);
       });
   };
-  const fetchCoins = async () => {
-    await axios.get(`https://api.coinpaprika.com/v1/tickers`)
-        .then(response => {
-          setCoins(response.data)
-        })
-        .catch(error => {
-          console.error(error)
-        });
-  };
 
+  const fetchCoinsAndTags = async () => {
+      const coinsResponse = await axios.get(`https://api.coinpaprika.com/v1/tickers`);
+      const tagsResponse = await axios.get(`https://api.coinpaprika.com/v1/tags/`, {
+          params: {
+              additional_fields: 'coins'
+          }
+      });
+  
+      const coins = coinsResponse.data;
+      const tags = tagsResponse.data;
+  
+      const mergedData = coins.map(coin => {
+          const coinTags = tags.filter(tag => tag.coins.includes(coin.id));
+          return {
+              ...coin,
+              tags: coinTags
+          };
+      });
+  
+      setCoins(mergedData);
+  };
+  
   useEffect(() => {
-    fetchCoins();
+      fetchCoinsAndTags()
   }, [])
 
   useEffect(() => {
@@ -54,8 +67,10 @@ const App = () => {
 
   const changeSelectedCoin = (coinId: string) => {
     const selected = coins.find((coin) => coin.id === coinId);
-    setSelectedCoin({ id: selected.id, name: selected.name });
-    setActiveTab("1")
+    if (selected) {
+        setSelectedCoin({ id: selected.id, name: selected.name });
+        setActiveTab("1")
+    }
   };
 
   return (

@@ -17,7 +17,7 @@ const Chart = ({selectedCoinId}:ChartProps) => {
 
     useEffect(() => {
         if (!chartRef.current && chartContainerRef.current) {
-            chartRef.current = createChart(chartContainerRef.current, { width: 600, height: 400 });
+            chartRef.current = createChart(chartContainerRef.current, {height: 400});
             seriesRef.current = chartRef.current.addLineSeries();
         }
     }, []);
@@ -42,7 +42,7 @@ const Chart = ({selectedCoinId}:ChartProps) => {
             {TIMEFRAMES.map((timeframe: Timeframes) => (
                 <Button
                     key={timeframe}
-                    type={selectedTimeframe === timeframe ? 'primary' : 'default'}
+                    type={selectedTimeframe === timeframe ? 'dashed' : 'default'}
                     onClick={() => setSelectedTimeframe(timeframe)}
                 >
                     {timeframe}

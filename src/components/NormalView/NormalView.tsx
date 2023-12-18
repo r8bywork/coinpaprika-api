@@ -1,5 +1,5 @@
 
-import {Card, Avatar, Tag, List, Collapse, Spin, Row, Col, Tooltip} from 'antd';
+import {Card, Avatar, Tag, List, Collapse, Spin, Row, Col, Tooltip, Button} from 'antd';
 import {AntDesignOutlined, LoadingOutlined} from '@ant-design/icons';
 import {Coin, TeamMember} from "../../interfaces.ts";
 const {Panel} = Collapse;
@@ -55,17 +55,16 @@ const NormalView = ({ coin, selectedCoin }: NormalViewProps) => {
                   <h3 className="font-bold">Links</h3>
                   {Object.entries(coin?.links).map(([key, values]) => (
                       values.map((url, index) => (
-                          <a
+                          <Button
                               href={url}
                               target="_blank"
                               rel="noreferrer"
                               key={`${key}-${index}`}
-                              className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2">
-                      {key}
-                      </a>
+                              type="link">
+                          {key}
+                          </Button>
                       ))
-                   ))
-                  }
+                  ))}
                 </div>
                 <p>Started at: {new Date(coin?.started_at).toLocaleDateString()}</p>
            </Card>}
