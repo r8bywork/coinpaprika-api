@@ -21,8 +21,8 @@ interface NormalViewProps {
 }
 const NormalView = ({ coin, selectedCoin }: NormalViewProps) => {
 	return (
-		<Row className={"centered"} gutter={50}>
-			<Col span={8}>
+		<Row className={"centered md:flex-row flex-col"} gutter={50}>
+			<Col md={8} xs={24} className={"md:order-first order-last"}>
 				{coin && (
 					<Card
 						cover={
@@ -91,7 +91,7 @@ const NormalView = ({ coin, selectedCoin }: NormalViewProps) => {
 					</Card>
 				)}
 			</Col>
-			<Col span={16}>
+			<Col md={16} xs={24} className={"md:mt-0 mt-10"}>
 				{selectedCoin ? (
 					<Chart selectedCoinId={selectedCoin.id} />
 				) : (
