@@ -70,9 +70,10 @@ export const columnsConfig = (
 		),
 		filters: [...parsedTags],
 		filterSearch: true,
-		// onFilter: (value: string, record: CoinTable) =>
-		//     record.tags.some(tag => tag.id === value),
-		// onFilter: (value: string, record: CoinTable) =>
-		// 	record.tags.some((tag) => tag.id === value),
+		onFilter: (value: Key, record: CoinTable): boolean => {
+			return (
+				typeof value === "string" && record.tags.some((tag) => tag.id === value)
+			);
+		},
 	},
 ];
