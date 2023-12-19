@@ -10,6 +10,7 @@ interface TableProps {
 }
 
 const CoinTable = ({ coins, changeSelectedCoin, tags }: TableProps) => {
+	console.log(tags);
 	const [searchText, setSearchText] = useState("");
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchText(e.target.value);
@@ -34,6 +35,7 @@ const CoinTable = ({ coins, changeSelectedCoin, tags }: TableProps) => {
 				value={searchText}
 				onChange={handleSearch}
 			/>
+			(
 			<Table
 				rowKey={"id"}
 				className={"cursor-pointer"}
@@ -43,6 +45,7 @@ const CoinTable = ({ coins, changeSelectedCoin, tags }: TableProps) => {
 					onClick: () => changeSelectedCoin(record.id),
 				})}
 			/>
+			)
 		</div>
 	);
 };

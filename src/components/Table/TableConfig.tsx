@@ -1,9 +1,13 @@
 import { Tag } from "antd";
+import { Key } from "antd/es/table/interface";
 import { CoinTable } from "../../interfaces.ts";
 
-export const columnsConfig = (
-	parsedTags: { text: string; value: string }[]
-) => [
+interface AllTags {
+	text: string;
+	value: string;
+}
+
+export const columnsConfig = (parsedTags: AllTags[]) => [
 	{
 		title: "Name",
 		dataIndex: "name",
@@ -70,10 +74,8 @@ export const columnsConfig = (
 		),
 		filters: [...parsedTags],
 		filterSearch: true,
-		onFilter: (value: Key, record: CoinTable): boolean => {
-			return (
-				typeof value === "string" && record.tags.some((tag) => tag.id === value)
-			);
+		onFilter: (value: boolean | Key, record: CoinTable): boolean => {
+			return record.tags.some((tag) => tag.id === value);
 		},
 	},
 ];
