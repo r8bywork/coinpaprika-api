@@ -1,4 +1,4 @@
-import ReactJson from "react-json-view";
+// import ReactJson from "react-json-view";
 import './Json.css'
 import {Coin } from "../../interfaces.ts";
 interface CoinInfoProps {
@@ -7,7 +7,7 @@ interface CoinInfoProps {
 const Json = ({coinInfo}:CoinInfoProps) => {
     return (
         <div className={"Json"}>
-            <ReactJson src={coinInfo} collapsed/>
+            {/*<ReactJson src={coinInfo} collapsed/>*/}
         </div>
     )
 }
