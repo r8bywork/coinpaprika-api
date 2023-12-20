@@ -22,6 +22,7 @@ const App = () => {
   const [visible, setVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('1');
   const [tags, setTags] = useState<{ name: string; id: string }[]>([]);
+  const [activeTags, setActiveTags] = useState<string[]>([]);
 
   const fetchCoinInfo = async (coinId?: string) => {
     await axios
@@ -73,6 +74,11 @@ const App = () => {
     }
   };
 
+  const changeActiveTags = (tag: string) => {
+    setActiveTags((prevTags) => [...prevTags, tag]);
+    setActiveTab('1');
+  };
+
   return (
     <div className='App'>
       <ModalWindow
@@ -104,6 +110,7 @@ const App = () => {
                     <NormalView
                       selectedCoin={selectedCoin}
                       coin={coinInfo}
+                      setActiveTags={changeActiveTags}
                     />
                   ),
                 },
@@ -115,6 +122,8 @@ const App = () => {
                       tags={tags}
                       changeSelectedCoin={changeSelectedCoin}
                       coins={coins}
+                      activeTags={activeTags}
+                      // filterTags={[{ text: 'Cryptocurrency', value: 'Cryptocurrency' }]}
                     />
                   ),
                 },

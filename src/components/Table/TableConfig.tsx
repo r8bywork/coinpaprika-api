@@ -7,7 +7,7 @@ interface AllTags {
   value: string;
 }
 
-export const columnsConfig = (parsedTags: AllTags[]) => [
+export const columnsConfig = (parsedTags: AllTags[], defaultFilteredValue: string[]) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -74,6 +74,7 @@ export const columnsConfig = (parsedTags: AllTags[]) => [
     ),
     filters: [...parsedTags],
     filterSearch: true,
+    defaultFilteredValue,
     onFilter: (value: boolean | Key, record: CoinTable): boolean => {
       return record.tags.some((tag) => tag.id === value);
     },

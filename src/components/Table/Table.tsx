@@ -3,17 +3,29 @@ import { ChangeEvent, useMemo, useState } from 'react';
 import { CoinTable } from '../../interfaces.ts';
 import { columnsConfig } from './TableConfig.tsx';
 
+interface Tags {
+  name: string;
+  id: string;
+}
+
 interface TableProps {
   coins: CoinTable[];
   changeSelectedCoin: (coinId: string) => void;
-  tags: { name: string; id: string }[];
+  tags: Tags[];
+  activeTags: string[];
 }
 
-const CoinTable = ({ coins, changeSelectedCoin, tags }: TableProps) => {
+const CoinTable = ({ coins, changeSelectedCoin, tags, activeTags }: TableProps) => {
+  console.log(activeTags);
   const [searchText, setSearchText] = useState('');
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
+
+  const defaultFilteredValue = useMemo(() => {
+    console.log(activeTags);
+    return activeTags;
+  }, [activeTags]);
 
   const filteredCoins = useMemo(() => {
     if (!searchText) return coins;
@@ -35,7 +47,7 @@ const CoinTable = ({ coins, changeSelectedCoin, tags }: TableProps) => {
       <Table
         rowKey={'id'}
         className={'cursor-pointer'}
-        columns={columnsConfig(parsedTags)}
+        columns={columnsConfig(parsedTags, defaultFilteredValue)}
         dataSource={filteredCoins}
         onRow={(record) => ({
           onClick: () => changeSelectedCoin(record.id),

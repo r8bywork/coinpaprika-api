@@ -7,8 +7,9 @@ const { Panel } = Collapse;
 interface NormalViewProps {
   coin: Coin | null;
   selectedCoin: { id: string; name: string };
+  setActiveTags: (tag: string) => void;
 }
-const NormalView = ({ coin, selectedCoin }: NormalViewProps) => {
+const NormalView = ({ coin, selectedCoin, setActiveTags }: NormalViewProps) => {
   return (
     <Row
       className={'centered md:flex-row flex-col'}
@@ -49,6 +50,10 @@ const NormalView = ({ coin, selectedCoin }: NormalViewProps) => {
                   <Tag
                     className={'cursor-pointer'}
                     color='blue'
+                    onClick={() => {
+                      setActiveTags(tag.id);
+                      // console.log(tag.id);
+                    }}
                   >
                     {tag.name}
                   </Tag>
