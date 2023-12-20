@@ -31,10 +31,20 @@ const Chart = ({ selectedCoinId }: ChartProps) => {
     if (!chartRef.current && chartContainerRef.current) {
       chartRef.current = createChart(chartContainerRef.current, {
         height: 400,
+        width: chartContainerRef.current.offsetWidth,
       });
       seriesRef.current = chartRef.current.addLineSeries();
     }
   };
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      chartRef.current?.resize(chartContainerRef.current?.offsetWidth || 0, 400);
+    });
+
+    resizeObserver.observe(chartContainerRef.current as Element);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   useEffect(initChart, []);
   useEffect(() => {
@@ -67,7 +77,7 @@ const Chart = ({ selectedCoinId }: ChartProps) => {
       ))}
       <div
         ref={chartContainerRef}
-        className={'w600px h400px'}
+        className={'w100% h400px'}
       />
     </div>
   );
