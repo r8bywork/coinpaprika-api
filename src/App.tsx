@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
 import { AutoComplete, Tabs } from 'antd';
 import axios from 'axios';
-import { Coin, CoinTable } from './interfaces.ts';
-import Table from './components/Table/Table.tsx';
-import Json from './components/Json/Json.tsx';
-import NormalView from './components/NormalView/NormalView.tsx';
+import { useEffect, useState } from 'react';
 import ModalWindow from './components/ModalWindow/ModalWindow.tsx';
+import NormalView from './components/NormalView/NormalView.tsx';
+import Table from './components/Table/Table.tsx';
+import { Coin, CoinTable } from './interfaces.ts';
 
 interface SelectedCoin {
   id: string;
@@ -36,8 +35,8 @@ const App = () => {
   };
 
   const fetchCoinsAndTags = async () => {
-    const coinsResponse = await axios.get(`https://api.coinpaprika.com/v1/tickers`);
-    const tagsResponse = await axios.get(`https://api.coinpaprika.com/v1/tags/`, {
+    const coinsResponse = await axios.get('https://api.coinpaprika.com/v1/tickers');
+    const tagsResponse = await axios.get('https://api.coinpaprika.com/v1/tags/', {
       params: {
         additional_fields: 'coins',
       },

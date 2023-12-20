@@ -1,9 +1,4 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    jest: true,
-  },
   extends: [
     'plugin:prettier/recommended',
     'eslint:recommended',
@@ -24,7 +19,6 @@ module.exports = {
   ignorePatterns: ['node_modules/', 'build/', 'dist/', 'coverage/', 'locales/'],
   rules: {
     'react/react-in-jsx-scope': 'off',
-    camelcase: 'error',
     'spaced-comment': 'error',
     quotes: ['error', 'single'],
     'no-duplicate-imports': 'error',
